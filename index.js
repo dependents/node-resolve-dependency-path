@@ -1,4 +1,5 @@
 var path = require('path');
+require('string.prototype.endswith');
 
 /**
  * Resolve a dependency's path
@@ -25,8 +26,9 @@ module.exports = function(dep, filename, directory) {
   if (!depExt) {
     filepath += fileExt;
   } else {
-    // If dep has multiple periods in the name add .js explicitly
-    if (fileExt === '.js') {
+    // If a dependency starts with a period AND it doesn't already end
+    // in .js AND doesn't use a custom plugin, add .js back to path.
+    if (fileExt === '.js' && !dep.endsWith('.js') && dep.indexOf('!') < 0) {
       filepath += fileExt;
     }
   }
