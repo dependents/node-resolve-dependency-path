@@ -7,6 +7,14 @@ describe('resolve-dependency-path', function() {
     assert(resolved.indexOf(__dirname) === 0);
   });
 
+  it('resolves with multiple periods in the dependency path', function() {
+    var depPath = './bar.baz.qux';
+    var filename = __dirname + '/foo.js';
+    var directory = __dirname;
+    var resolved = resolvePath(depPath, filename, directory);
+    assert(resolved === __dirname + '/bar.baz.qux.js');
+  });
+
   it('resolves relative paths', function() {
     var resolved = resolvePath('./bar', __dirname + '/foo.js', __dirname);
 

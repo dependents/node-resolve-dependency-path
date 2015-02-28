@@ -24,6 +24,11 @@ module.exports = function(dep, filename, directory) {
 
   if (!depExt) {
     filepath += fileExt;
+  } else {
+    // If dep has multiple periods in the name add .js explicitly
+    if (fileExt === '.js') {
+      filepath += fileExt;
+    }
   }
 
   return filepath;
