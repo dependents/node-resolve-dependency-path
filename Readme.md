@@ -1,4 +1,4 @@
-### resolve-dependency-path
+### resolve-dependency-path [![npm](http://img.shields.io/npm/v/resolve-dependency-path.svg)](https://npmjs.org/package/resolve-dependency-path) [![npm](http://img.shields.io/npm/dm/resolve-dependency-path.svg)](https://npmjs.org/package/resolve-dependency-path)
 
 > Convert a dependency path into a filepath
 
