@@ -2,8 +2,7 @@
 
 > Convert a dependency path into a filepath
 
-I literally wrote this simple function in a handful of projects and decided it should
-be its own module.
+`npm install resolve-dependency-path`
 
 ### Usage
 
