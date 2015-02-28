@@ -104,4 +104,36 @@ describe('resolve-dependency-path', function() {
       assert.equal(path.extname(resolved), '.mustache');
     });
   });
+  describe('implicit jspm/systemjs style plugins', function() {
+    it('resolve w/initial period', function() {
+      var depPath = './templates/file.css!';
+      var filename = __dirname + '/foo.js';
+      var directory = __dirname;
+      var resolved = resolvePath(depPath, filename, directory);
+      assert.equal(path.extname(resolved), '.css');
+    });
+    it('resolve w/o initial period', function() {
+      var depPath = 'templates/file.css!';
+      var filename = __dirname + '/foo.js';
+      var directory = __dirname;
+      var resolved = resolvePath(depPath, filename, directory);
+      assert.equal(path.extname(resolved), '.css');
+    });
+  });
+  describe('explicit jspm/systemjs style plugins', function() {
+    it('resolve w/initial period', function() {
+      var depPath = './templates/file.txt!text';
+      var filename = __dirname + '/foo.js';
+      var directory = __dirname;
+      var resolved = resolvePath(depPath, filename, directory);
+      assert.equal(path.extname(resolved), '.txt');
+    });
+    it('resolve w/o initial period', function() {
+      var depPath = 'templates/file.txt!text';
+      var filename = __dirname + '/foo.js';
+      var directory = __dirname;
+      var resolved = resolvePath(depPath, filename, directory);
+      assert.equal(path.extname(resolved), '.txt');
+    });
+  });
 });

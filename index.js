@@ -30,6 +30,11 @@ module.exports = function(dep, filename, directory) {
     // in .js AND doesn't use a custom plugin, add .js back to path.
     if (fileExt === '.js' && !dep.endsWith('.js') && dep.indexOf('!') < 0) {
       filepath += fileExt;
+    } else {
+      // If using a SystemJS style plugin
+      if (depExt.indexOf('!') > -1) {
+        filepath += depExt.substring(0, depExt.indexOf('!'));
+      }
     }
   }
 
