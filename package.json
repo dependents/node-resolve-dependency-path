@@ -24,6 +24,9 @@
     "url": "https://github.com/mrjoelkemp/node-resolve-dependency-path/issues"
   },
   "homepage": "https://github.com/mrjoelkemp/node-resolve-dependency-path",
+  "dependencies": {
+    "string.prototype.endswith": "^0.2.0"
+  },
   "devDependencies": {
     "jscs": "~1.8.0",
     "mocha": "~2.0.1"
