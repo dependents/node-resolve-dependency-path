@@ -27,5 +27,9 @@
   "devDependencies": {
     "jscs": "~1.8.0",
     "mocha": "~2.0.1"
+  },
+  "dependencies": {
+    "module-lookup-amd": "~1.0.0",
+    "sync-exec": "~0.5.0"
   }
 }

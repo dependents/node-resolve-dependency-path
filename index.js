@@ -1,21 +1,51 @@
 var path = require('path');
+var amdLookup = require('module-lookup-amd');
 
 /**
  * Resolve a dependency's path
- * @param  {String} dep - The dependency name to resolve
- * @param  {String} filename - Filename that contains the dependency
- * @param  {String} directory - Root of all files
+ *
+ * @param  {Object} options
+ * @param  {String} options.path - The dependency path to resolve
+ * @param  {String} options.filename - Filename that contains the dependency
+ * @param  {String} options.directory - Root of all files
+ * @param  {String} options.requireConfig - RequireJS configuration path
+ *
  * @return {String} Absolute/resolved path of the dependency
  */
-module.exports = function(dep, filename, directory) {
+module.exports = function(options) {
+  var dep = options.path;
+  var filename = options.filename;
+  var directory = options.directory;
+  var requireConfig = options.requireConfig;
+
   if (!dep) { throw new Error('dependency path not given'); }
   if (!filename) { throw new Error('filename not given'); }
   if (!directory) { throw new Error('directory not given'); }
 
-  var filepath = getDependencyPath(dep, filename, directory);
-  var ext = getDependencyExtension(dep, filename);
+  // RequireJS
+  if (requireConfig) {
+    dep = amdLookup(requireConfig, dep);
 
-  return filepath + ext;
+  // SystemJS
+  } else if (path.extname(dep).indexOf('!') !== -1) {
+    dep = systemJSLookup(dep);
+  }
+
+  // TODO: Sass lookup
+
+  var filepath = getDependencyPath(dep, filename, directory);
+
+  return findFileLike(filepath);
+}
+
+/**
+ * SystemJS logic for resolving a loader-specific path
+ * @param  {String} dep
+ * @return {String}
+ */
+function systemJSLookup(dep) {
+  var depExt = path.extname(dep);
+  return dep.substring(0, depExt.indexOf('!'));
 }
 
 /**
@@ -65,4 +95,20 @@ function getDependencyExtension(dep, filename) {
   }
 
   return '';
+}
+
+// TODO: Move to module
+var execSync = require('sync-exec');
+var isWin = /^win/.test(process.platform);
+/**
+ * Find the file that matches/completes the given path
+ * @param  {[type]} filepath [description]
+ * @return {[type]}          [description]
+ */
+function findFileLike(filepath) {
+  var cmd = [isWin ? 'dir' : 'ls', filepath + '*'].join(' ');
+
+  var out = execSync(cmd);
+  var lines = out.stdout.split('\n');
+  return lines[0];
 }
