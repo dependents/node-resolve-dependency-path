@@ -2,19 +2,23 @@
 
 > Convert a dependency path into a filepath
 
-`npm install resolve-dependency-path`
+`npm install --save resolve-dependency-path`
 
 ### Usage
 
 ```js
 var resolvePath = require('resolve-dependency-path');
 
-var resolved = resolvePath(depPath, filename, directory);
+var resolved = resolvePath({
+  dependency: './foobar',
+  filename: 'path/to/file/containing/dependency.js',
+  directory: 'path/to/all/files'
+});
 ```
 
-* `depPath`: the actual dependency path (probably extracted from a `require()`)
-* filename: the file that required this dependency (likely the file whose dependencies are being extracted)
-* directory: the root of all modules being processed. Dependencies are often about this root unless they're relative.
+* `dependency`: the actual dependency path (probably extracted from a `require()`)
+* `filename`: the file that required this dependency (likely the file whose dependencies are being extracted)
+* `directory`: the root of all modules being processed. Dependencies are often about this root unless they're relative.
 
 ### Example
 
