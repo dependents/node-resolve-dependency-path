@@ -25,7 +25,7 @@ module.exports = function({ dependency: dep, filename, directory } = {}) {
  * @return {Boolean}
  */
 function isRelative(dep) {
-  return dep.startsWith('..') || dep.startsWith('.');
+  return dep.indexOf('..') === 0 || dep.indexOf('.') === 0;
 }
 
 /**
