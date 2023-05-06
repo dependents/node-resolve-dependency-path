@@ -1,15 +1,21 @@
-### resolve-dependency-path [![npm](http://img.shields.io/npm/v/resolve-dependency-path.svg)](https://npmjs.org/package/resolve-dependency-path) [![npm](http://img.shields.io/npm/dm/resolve-dependency-path.svg)](https://npmjs.org/package/resolve-dependency-path)
+# resolve-dependency-path
+
+[![CI](https://img.shields.io/github/actions/workflow/status/dependents/node-resolve-dependency-path/ci.yml?branch=main&label=CI&logo=github)](https://github.com/dependents/node-resolve-dependency-path/actions/workflows/ci.yml?query=branch%3Amain)
+[![npm version](https://img.shields.io/npm/v/resolve-dependency-path?logo=npm&logoColor=fff)](https://www.npmjs.com/package/resolve-dependency-path)
+[![npm downloads](https://img.shields.io/npm/dm/resolve-dependency-path)](https://www.npmjs.com/package/resolve-dependency-path)
 
 > Convert a dependency path into a filepath
 
-`npm install --save resolve-dependency-path`
+```sh
+npm install resolve-dependency-path
+```
 
-### Usage
+## Usage
 
 ```js
-var resolvePath = require('resolve-dependency-path');
+const resolvePath = require('resolve-dependency-path');
 
-var resolved = resolvePath({
+const resolved = resolvePath({
   dependency: './foobar',
   filename: 'path/to/file/containing/dependency.js',
   directory: 'path/to/all/files'
@@ -20,7 +26,7 @@ var resolved = resolvePath({
 * `filename`: the file that required this dependency (likely the file whose dependencies are being extracted)
 * `directory`: the root of all modules being processed. Dependencies are often about this root unless they're relative.
 
-### Example
+## Example
 
 If you have a file like:
 
@@ -68,3 +74,7 @@ define([
 The dependency `feature2/bar` is relative to the root of all files, `myapp`, *not* the file `foo.js`.
 
 This is why the `directory` attribute is required to use this library.
+
+## License
+
+[MIT](LICENSE)
