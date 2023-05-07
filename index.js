@@ -27,7 +27,7 @@ module.exports = function({ dependency, filename, directory } = {}) {
  * @return {String} Absolute path for the dependency
  */
 function getDependencyPath(dependency, filename, directory) {
-  if (dependency.indexOf('..') === 0 || dependency.indexOf('.') === 0) {
+  if (dependency.startsWith('..') || dependency.startsWith('.')) {
     return path.resolve(path.dirname(filename), dependency);
   }
 
