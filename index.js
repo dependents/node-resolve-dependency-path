@@ -9,38 +9,38 @@ const path = require('path');
  * @param  {String} options.directory - Root of all files
  * @return {String} Absolute/resolved path of the dependency
  */
-module.exports = function({ dependency: dep, filename, directory } = {}) {
-  if (!dep) throw new Error('dependency path not given');
+module.exports = function({ dependency, filename, directory } = {}) {
+  if (!dependency) throw new Error('dependency path not given');
   if (!filename) throw new Error('filename not given');
   if (!directory) throw new Error('directory not given');
 
-  const filepath = getDependencyPath(dep, filename, directory);
-  const ext = getDependencyExtension(dep, filename);
+  const filepath = getDependencyPath(dependency, filename, directory);
+  const ext = getDependencyExtension(dependency, filename);
 
   return filepath + ext;
 };
 
 /**
- * @param  {String} dep
+ * @param  {String} dependency
  * @param  {String} filename
  * @param  {String} directory
  * @return {String} Absolute path for the dependency
  */
-function getDependencyPath(dep, filename, directory) {
-  if (dep.indexOf('..') === 0 || dep.indexOf('.') === 0) {
-    return path.resolve(path.dirname(filename), dep);
+function getDependencyPath(dependency, filename, directory) {
+  if (dependency.indexOf('..') === 0 || dependency.indexOf('.') === 0) {
+    return path.resolve(path.dirname(filename), dependency);
   }
 
-  return path.resolve(directory, dep);
+  return path.resolve(directory, dependency);
 }
 
 /**
- * @param  {String} dep
+ * @param  {String} dependency
  * @param  {String} filename
  * @return {String} The determined extension for the dependency (or empty if already supplied)
  */
-function getDependencyExtension(dep, filename) {
-  const depExt = path.extname(dep);
+function getDependencyExtension(dependency, filename) {
+  const depExt = path.extname(dependency);
   const fileExt = path.extname(filename);
 
   if (!depExt) {
@@ -49,7 +49,7 @@ function getDependencyExtension(dep, filename) {
 
   // If a dependency starts with a period AND it doesn't already end
   // in .js AND doesn't use a custom plugin, add .js back to path
-  if (fileExt === '.js' && depExt !== '.js' && !dep.includes('!')) {
+  if (fileExt === '.js' && depExt !== '.js' && !dependency.includes('!')) {
     return fileExt;
   }
 
