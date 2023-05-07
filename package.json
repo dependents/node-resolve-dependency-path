@@ -1,6 +1,6 @@
 {
   "name": "resolve-dependency-path",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Convert a dependency path into a filepath",
   "main": "index.js",
   "files": [
