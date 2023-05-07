@@ -21,21 +21,13 @@ module.exports = function({ dependency: dep, filename, directory } = {}) {
 };
 
 /**
- * @param  {String}  dep
- * @return {Boolean}
- */
-function isRelative(dep) {
-  return dep.indexOf('..') === 0 || dep.indexOf('.') === 0;
-}
-
-/**
  * @param  {String} dep
  * @param  {String} filename
  * @param  {String} directory
  * @return {String} Absolute path for the dependency
  */
 function getDependencyPath(dep, filename, directory) {
-  if (isRelative(dep)) {
+  if (dep.indexOf('..') === 0 || dep.indexOf('.') === 0) {
     return path.resolve(path.dirname(filename), dep);
   }
 
