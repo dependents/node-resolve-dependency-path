@@ -7,92 +7,10 @@ const path = require('path');
 const resolvePath = require('../index.js');
 
 describe('resolve-dependency-path', () => {
-  it('resolves with absolute paths', () => {
-    const resolved = resolvePath({
-      dependency: './bar',
-      filename: path.join(__dirname, '/foo.js'),
-      directory: __dirname
-    });
-    assert.ok(resolved.startsWith(__dirname));
-  });
-
-  it('resolves w/initial period, w/ending in .js', () => {
-    const depPath = './index';
-    const filename = path.join(__dirname, '/foo.js');
-    const directory = __dirname;
-    const resolved = resolvePath({
-      dependency: depPath,
-      filename,
-      directory
-    });
-    const expected = path.join(__dirname, '/index.js');
-    assert.equal(resolved, expected);
-  });
-
-  it('resolves w/initial period, w/o ending in .js', () => {
-    const depPath = './index.js';
-    const filename = path.join(__dirname, '/foo.js');
-    const directory = __dirname;
-    const resolved = resolvePath({
-      dependency: depPath,
-      filename,
-      directory
-    });
-    const expected = path.join(__dirname, '/index.js');
-    assert.equal(resolved, expected);
-  });
-
-  it('resolves w/o initial period, w/o ending in .js', () => {
-    const depPath = 'index';
-    const filename = path.join(__dirname, '/foo.js');
-    const directory = __dirname;
-    const resolved = resolvePath({
-      dependency: depPath,
-      filename,
-      directory
-    });
-    const expected = path.join(__dirname, '/index.js');
-    assert.equal(resolved, expected);
-  });
-
-  it('resolves w/o initial period, w/ending in .js', () => {
-    const depPath = 'index.js';
-    const filename = path.join(__dirname, '/foo.js');
-    const directory = __dirname;
-    const resolved = resolvePath({
-      dependency: depPath,
-      filename,
-      directory
-    });
-    const expected = path.join(__dirname, '/index.js');
-    assert.equal(resolved, expected);
-  });
-
-  it('resolves relative paths', () => {
-    const resolved = resolvePath({
-      dependency: './bar',
-      filename: path.join(__dirname, '/foo.js'),
-      directory: __dirname
-    });
-    const expected = path.join(__dirname, '/bar.js');
-    assert.equal(resolved, expected);
-  });
-
-  it('resolves non-relative paths', () => {
-    const filename = path.join(__dirname, '/feature1/foo.js');
-    const resolved = resolvePath({
-      dependency: 'feature2/bar',
-      filename,
-      directory: __dirname
-    });
-    const expected = path.join(__dirname, '/feature2/bar.js');
-    assert.equal(resolved, expected);
-  });
-
   it('throws if the dependency path is missing', () => {
     assert.throws(() => {
       resolvePath();
-    });
+    }, /^Error: dependency path not given$/);
   });
 
   it('throws if the filename is missing', () => {
@@ -100,7 +18,7 @@ describe('resolve-dependency-path', () => {
       resolvePath({
         dependency: './bar'
       });
-    });
+    }, /^Error: filename not given$/);
   });
 
   it('throws if the directory is missing', () => {
@@ -109,16 +27,106 @@ describe('resolve-dependency-path', () => {
         dependency: './bar',
         filename: path.join(__dirname, '/foo.js')
       });
+    }, /^Error: directory not given$/);
+  });
+
+  it('resolves with absolute paths', () => {
+    const dependency = './bar';
+    const filename = path.join(__dirname, '/foo.js');
+    const directory = __dirname;
+    const resolved = resolvePath({
+      dependency,
+      filename,
+      directory
     });
+    assert.ok(resolved.startsWith(__dirname));
+  });
+
+  it('resolves w/initial period, w/ending in .js', () => {
+    const dependency = './index';
+    const filename = path.join(__dirname, '/foo.js');
+    const directory = __dirname;
+    const resolved = resolvePath({
+      dependency,
+      filename,
+      directory
+    });
+    const expected = path.join(__dirname, '/index.js');
+    assert.equal(resolved, expected);
+  });
+
+  it('resolves w/initial period, w/o ending in .js', () => {
+    const dependency = './index.js';
+    const filename = path.join(__dirname, '/foo.js');
+    const directory = __dirname;
+    const resolved = resolvePath({
+      dependency,
+      filename,
+      directory
+    });
+    const expected = path.join(__dirname, '/index.js');
+    assert.equal(resolved, expected);
+  });
+
+  it('resolves w/o initial period, w/o ending in .js', () => {
+    const dependency = 'index';
+    const filename = path.join(__dirname, '/foo.js');
+    const directory = __dirname;
+    const resolved = resolvePath({
+      dependency,
+      filename,
+      directory
+    });
+    const expected = path.join(__dirname, '/index.js');
+    assert.equal(resolved, expected);
+  });
+
+  it('resolves w/o initial period, w/ending in .js', () => {
+    const dependency = 'index.js';
+    const filename = path.join(__dirname, '/foo.js');
+    const directory = __dirname;
+    const resolved = resolvePath({
+      dependency,
+      filename,
+      directory
+    });
+    const expected = path.join(__dirname, '/index.js');
+    assert.equal(resolved, expected);
+  });
+
+  it('resolves relative paths', () => {
+    const dependency = './bar.js';
+    const filename = path.join(__dirname, '/foo.js');
+    const directory = __dirname;
+    const resolved = resolvePath({
+      dependency,
+      filename,
+      directory
+    });
+    const expected = path.join(__dirname, '/bar.js');
+    assert.equal(resolved, expected);
+  });
+
+  it('resolves non-relative paths', () => {
+    const dependency = 'feature2/bar';
+    const filename = path.join(__dirname, '/feature1/foo.js');
+    const directory = __dirname;
+    const resolved = resolvePath({
+      dependency,
+      filename,
+      directory
+    });
+    const expected = path.join(__dirname, '/feature2/bar.js');
+    assert.equal(resolved, expected);
   });
 
   describe('multiple period filenames', () => {
     it('resolves with multiple periods in the dependency path', () => {
-      const depPath = './bar.baz.qux';
+      const dependency = './bar.baz.qux';
       const filename = path.join(__dirname, '/foo.js');
       const directory = __dirname;
       const resolved = resolvePath({
-        dependency: depPath,
+        dependency,
         filename,
         directory
       });
@@ -127,11 +135,11 @@ describe('resolve-dependency-path', () => {
     });
 
     it('does not duplicate extensions', () => {
-      const depPath = '../index.js';
+      const dependency = '../index.js';
       const filename = path.join(__dirname, '/foo.js');
       const directory = __dirname;
       const resolved = resolvePath({
-        dependency: depPath,
+        dependency,
         filename,
         directory
       });
@@ -141,11 +149,11 @@ describe('resolve-dependency-path', () => {
     });
 
     it('does not add the incorrect extension for sass files', () => {
-      const depPath = 'styles';
+      const dependency = 'styles';
       const filename = path.join(__dirname, '/foo.scss');
       const directory = __dirname;
       const resolved = resolvePath({
-        dependency: depPath,
+        dependency,
         filename,
         directory
       });
@@ -153,11 +161,11 @@ describe('resolve-dependency-path', () => {
     });
 
     it('does not add the incorrect extension for mustache files', () => {
-      const depPath = 'hgn!templates/foo.mustache';
+      const dependency = 'hgn!templates/foo.mustache';
       const filename = path.join(__dirname, '/foo.js');
       const directory = __dirname;
       const resolved = resolvePath({
-        dependency: depPath,
+        dependency,
         filename,
         directory
       });
@@ -167,11 +175,11 @@ describe('resolve-dependency-path', () => {
 
   describe('implicit jspm/systemjs style plugins', () => {
     it('resolve w/initial period', () => {
-      const depPath = './templates/file.css!';
+      const dependency = './templates/file.css!';
       const filename = path.join(__dirname, '/foo.js');
       const directory = __dirname;
       const resolved = resolvePath({
-        dependency: depPath,
+        dependency,
         filename,
         directory
       });
@@ -179,11 +187,11 @@ describe('resolve-dependency-path', () => {
     });
 
     it('resolve w/o initial period', () => {
-      const depPath = 'templates/file.css!';
+      const dependency = 'templates/file.css!';
       const filename = path.join(__dirname, '/foo.js');
       const directory = __dirname;
       const resolved = resolvePath({
-        dependency: depPath,
+        dependency,
         filename,
         directory
       });
@@ -193,11 +201,11 @@ describe('resolve-dependency-path', () => {
 
   describe('explicit jspm/systemjs style plugins', () => {
     it('resolve w/initial period', () => {
-      const depPath = './templates/file.txt!text';
+      const dependency = './templates/file.txt!text';
       const filename = path.join(__dirname, '/foo.js');
       const directory = __dirname;
       const resolved = resolvePath({
-        dependency: depPath,
+        dependency,
         filename,
         directory
       });
@@ -205,11 +213,11 @@ describe('resolve-dependency-path', () => {
     });
 
     it('resolve w/o initial period', () => {
-      const depPath = 'templates/file.txt!text';
+      const dependency = 'templates/file.txt!text';
       const filename = path.join(__dirname, '/foo.js');
       const directory = __dirname;
       const resolved = resolvePath({
-        dependency: depPath,
+        dependency,
         filename,
         directory
       });
@@ -219,11 +227,11 @@ describe('resolve-dependency-path', () => {
 
   describe('webpack support', () => {
     it.skip('resolves properly', () => {
-      const depPath = './styles/foo.css';
+      const dependency = './styles/foo.css';
       const filename = path.join(__dirname, '/foo.js');
       const directory = __dirname;
       const resolved = resolvePath({
-        dependency: depPath,
+        dependency,
         filename,
         directory
       });
