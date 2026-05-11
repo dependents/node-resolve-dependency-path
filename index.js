@@ -3,11 +3,14 @@
 const path = require('path');
 
 /**
- * @param  {Object} options
- * @param  {String} options.dependency - The dependency name to resolve
- * @param  {String} options.filename - Filename that contains the dependency
- * @param  {String} options.directory - Root of all files
- * @return {String} Absolute/resolved path of the dependency
+ * Resolve a dependency specifier to an absolute file path.
+ *
+ * @param  {object} options
+ * @param  {string} options.dependency - The dependency specifier (e.g. `'./bar'` or `'lodash'`)
+ * @param  {string} options.filename   - Absolute or relative path of the file that contains the dependency
+ * @param  {string} options.directory  - Root directory used to resolve non-relative dependencies
+ * @returns {string} Resolved absolute path including the inferred file extension
+ * @throws {Error} When any of the required options is missing or falsy
  */
 module.exports = function({ dependency, filename, directory } = {}) {
   if (!dependency) throw new Error('dependency path not given');
@@ -15,16 +18,16 @@ module.exports = function({ dependency, filename, directory } = {}) {
   if (!directory) throw new Error('directory not given');
 
   const filepath = getDependencyPath(dependency, filename, directory);
-  const ext = getDependencyExtension(dependency, filename);
+  const extension = getDependencyExtension(dependency, filename);
 
-  return filepath + ext;
+  return filepath + extension;
 };
 
 /**
- * @param  {String} dependency
- * @param  {String} filename
- * @param  {String} directory
- * @return {String} Absolute path for the dependency
+ * @param  {string} dependency
+ * @param  {string} filename
+ * @param  {string} directory
+ * @returns {string}
  */
 function getDependencyPath(dependency, filename, directory) {
   if (dependency.startsWith('..') || dependency.startsWith('.')) {
@@ -35,27 +38,30 @@ function getDependencyPath(dependency, filename, directory) {
 }
 
 /**
- * @param  {String} dependency
- * @param  {String} filename
- * @return {String} The determined extension for the dependency (or empty if already supplied)
+ * Returns the file extension to append to the resolved path.
+ * Returns an empty string when the dependency already has a final extension.
+ *
+ * @param  {string} dependency
+ * @param  {string} filename
+ * @returns {string}
  */
 function getDependencyExtension(dependency, filename) {
-  const depExt = path.extname(dependency);
-  const fileExt = path.extname(filename);
+  const dependencyExtension = path.extname(dependency);
+  const fileExtension = path.extname(filename);
 
-  if (!depExt) {
-    return fileExt;
+  if (!dependencyExtension) {
+    return fileExtension;
   }
 
   // If a dependency starts with a period AND it doesn't already end
   // in .js AND doesn't use a custom plugin, add .js back to path
-  if (fileExt === '.js' && depExt !== '.js' && !dependency.includes('!')) {
-    return fileExt;
+  if (fileExtension === '.js' && dependencyExtension !== '.js' && !dependency.includes('!')) {
+    return fileExtension;
   }
 
   // If using a SystemJS style plugin
-  if (depExt.includes('!')) {
-    return depExt.substring(0, depExt.indexOf('!'));
+  if (dependencyExtension.includes('!')) {
+    return dependencyExtension.substring(0, dependencyExtension.indexOf('!'));
   }
 
   return '';
