@@ -22,9 +22,13 @@ const resolved = resolvePath({
 });
 ```
 
-* `dependency`: the actual dependency path (probably extracted from a `require()`)
-* `filename`: the file that required this dependency (likely the file whose dependencies are being extracted)
-* `directory`: the root of all modules being processed. Dependencies are often about this root unless they're relative.
+### Options
+
+| Option | Type | Required | Description |
+|---|---|---|---|
+| `dependency` | `string` | Yes | The dependency specifier (e.g. the argument to `require()`) |
+| `filename` | `string` | Yes | Absolute or relative path of the file that contains the dependency |
+| `directory` | `string` | Yes | Root directory used to resolve non-relative dependencies |
 
 ## Example
 
@@ -33,7 +37,7 @@ If you have a file like:
 *myapp/foo.js*
 
 ```js
-var require('./bar');
+require('./bar');
 ```
 
 Then if you want to open the file associated with the dependency, you need to resolve `./bar` onto the filesystem.
