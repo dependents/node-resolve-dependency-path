@@ -1,6 +1,4 @@
-'use strict';
-
-const path = require('node:path');
+import path from 'node:path';
 
 /**
  * Resolve a dependency specifier to an absolute file path.
@@ -12,7 +10,7 @@ const path = require('node:path');
  * @returns {string} Resolved absolute path including the inferred file extension
  * @throws {Error} When any of the required options is missing or falsy
  */
-module.exports = function({ dependency, filename, directory } = {}) {
+export default function resolveDependencyPath({ dependency, filename, directory } = {}) {
   if (!dependency) throw new Error('dependency path not given');
   if (!filename) throw new Error('filename not given');
   if (!directory) throw new Error('directory not given');
@@ -21,7 +19,7 @@ module.exports = function({ dependency, filename, directory } = {}) {
   const extension = getDependencyExtension(dependency, filename);
 
   return filepath + extension;
-};
+}
 
 /**
  * @param  {string} dependency

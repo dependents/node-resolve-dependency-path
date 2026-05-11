@@ -2,9 +2,16 @@
   "name": "resolve-dependency-path",
   "version": "4.0.1",
   "description": "Convert a dependency path into a filepath",
-  "main": "index.js",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "default": "./index.js"
+    }
+  },
   "files": [
-    "index.js"
+    "index.js",
+    "index.d.ts"
   ],
   "scripts": {
     "lint": "xo",
@@ -29,7 +36,7 @@
   },
   "homepage": "https://github.com/dependents/node-resolve-dependency-path",
   "engines": {
-    "node": ">=20"
+    "node": ">=20.19.0 || >=22.12.0"
   },
   "devDependencies": {
     "c8": "^11.0.0",
