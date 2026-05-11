@@ -1,6 +1,6 @@
 'use strict';
 
-const path = require('path');
+const path = require('node:path');
 
 /**
  * Resolve a dependency specifier to an absolute file path.
@@ -61,7 +61,7 @@ function getDependencyExtension(dependency, filename) {
 
   // If using a SystemJS style plugin
   if (dependencyExtension.includes('!')) {
-    return dependencyExtension.substring(0, dependencyExtension.indexOf('!'));
+    return dependencyExtension.slice(0, dependencyExtension.indexOf('!'));
   }
 
   return '';
