@@ -12,14 +12,22 @@ npm install resolve-dependency-path
 
 ## Usage
 
+### ESM
+
 ```js
-const resolvePath = require('resolve-dependency-path');
+import resolvePath from 'resolve-dependency-path';
 
 const resolved = resolvePath({
   dependency: './foobar',
   filename: 'path/to/file/containing/dependency.js',
   directory: 'path/to/all/files'
 });
+```
+
+### CommonJS
+
+```js
+const { default: resolvePath } = require('resolve-dependency-path');
 ```
 
 ### Options
