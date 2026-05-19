@@ -1,6 +1,6 @@
 {
   "name": "resolve-dependency-path",
-  "version": "4.0.1",
+  "version": "5.0.0",
   "description": "Convert a dependency path into a filepath",
   "type": "module",
   "exports": {
